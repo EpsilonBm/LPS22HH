@@ -31,6 +31,11 @@
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
 
+typedef struct {
+  int decimalPart;
+  int integerPart;
+}FloatNum;
+
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -65,6 +70,12 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
 
     // Set the state
   //}
+}
+
+FloatNum * Float_Process(float data, int precision, FloatNum * out) {
+  out->integerPart = (int)data;
+  out->decimalPart = (int)((data - out->integerPart) * (10 ^ (precision)));
+  return out;
 }
 /* USER CODE END 0 */
 
@@ -122,25 +133,14 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-    // if () {
-    //
-    // }
-    //------------------------
-    // Output data rate:
-    // lps22hh_App_GetOutputDataRate(&lps22hhObj, &odr_data);
-    //
-    // // sprintf(message, "ODR:%.1f\r\n", odr_data);
     // // To replace the %f use in the sprintf:
     // int integer_part = (int)odr_data;
     // int decimal_part = (int)((odr_data - integer_part) * 10);
     // snprintf(message, sizeof(message), "ODR:%d.%d\r\n", integer_part, decimal_part);
-    //
-    // HAL_UART_Transmit(&huart1, (const uint8_t *)message, strlen(message), HAL_MAX_DELAY);
 
     //------------------------
     // Press value:
     // LPS22HH_PRESS_Driver.GetPressure(&lps22hhObj, &press);
-    // sprintf(message, "Press:%.3f\r\n", press);
     // HAL_UART_Transmit(&huart1, (const uint8_t *)message, strlen(message), HAL_MAX_DELAY);
 
     /* USER CODE END WHILE */
