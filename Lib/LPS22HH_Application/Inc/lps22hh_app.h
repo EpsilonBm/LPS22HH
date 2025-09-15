@@ -11,16 +11,28 @@ typedef enum {
     lps22hhERROR = -1, lps22hhInit = 0, lps22hhFIFOFull = 1, lps22hhFIFOReady = 2
 }lps22hhStateTypeDef;
 
+typedef struct {
+    uint8_t CTRL_REG3;
+    uint8_t FIFO_CTRL;
+    uint8_t FIFO_WTM;
+    uint8_t FIFO_STATUS1;
+    uint8_t FIFO_STATUS2;
+    uint8_t STATUS;
+    uint8_t WHO_AM_I;
+}FIFODebugDataTypeDef;
+
 extern LPS22HH_IO_t lps22hhIO;
 extern LPS22HH_Object_t lps22hhObj;
 extern lps22hh_odr_t odr;
 extern lps22hhStateTypeDef lps22hhState;
+extern FIFODebugDataTypeDef FIFODebugData;
 
 
 int32_t lps22hh_App_Init(LPS22HH_Object_t *, LPS22HH_IO_t *);
 int32_t lps22hh_App_FIFO_Init(LPS22HH_Object_t *, uint8_t);
 int32_t lps22hh_App_GetOutputDataRate(LPS22HH_Object_t *, float *);
 int32_t lps22hh_App_SetOutputDataRate(LPS22HH_Object_t *, float);
+FIFODebugDataTypeDef * lps22hh_debug_FIFOstatus(LPS22HH_Object_t *, FIFODebugDataTypeDef *);
 
 
 #endif //LPS22HH_APP_H

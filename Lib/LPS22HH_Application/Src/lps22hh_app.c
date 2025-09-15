@@ -7,6 +7,7 @@ LPS22HH_Object_t lps22hhObj;      // lps22hh object(pObj)
 #ifdef __STM32F4xx_HAL_H
 extern I2C_HandleTypeDef hi2c1;   // REMAIN CONFUSION(Will there be confliction), but it must be the
 #endif
+FIFODebugDataTypeDef FIFODebugData;
 
 static void lps22hh_App_IO_Init(LPS22HH_IO_t *);
 static int32_t LPS22HH_WriteReg(uint16_t, uint16_t, uint8_t *, uint16_t);
@@ -121,6 +122,17 @@ int32_t lps22hh_App_SetOutputDataRate(LPS22HH_Object_t * pObj, float Odr) {
         return LPS22HH_TEMP_SetOutputDataRate(pObj, Odr);
     }
     return LPS22HH_ERROR;
+}
+
+FIFODebugDataTypeDef * lps22hh_debug_FIFOstatus(LPS22HH_Object_t * pObj, FIFODebugDataTypeDef * FIFODebugData) {
+    lps22hh_read_reg(&(pObj->Ctx), LPS22HH_CTRL_REG3, (uint8_t *) &(FIFODebugData->CTRL_REG3), 1);
+    lps22hh_read_reg(&(pObj->Ctx), LPS22HH_FIFO_CTRL, (uint8_t *) &(FIFODebugData->FIFO_CTRL), 1);
+    lps22hh_read_reg(&(pObj->Ctx), LPS22HH_FIFO_WTM, (uint8_t *) &(FIFODebugData->FIFO_WTM), 1);
+    lps22hh_read_reg(&(pObj->Ctx), LPS22HH_FIFO_STATUS1, (uint8_t *) &(FIFODebugData->FIFO_STATUS1), 1);
+    lps22hh_read_reg(&(pObj->Ctx), LPS22HH_FIFO_STATUS2, (uint8_t *) &(FIFODebugData->FIFO_STATUS2), 1);
+    lps22hh_read_reg(&(pObj->Ctx), LPS22HH_STATUS, (uint8_t *) &(FIFODebugData->STATUS), 1);
+    lps22hh_read_reg(&(pObj->Ctx), LPS22HH_WHO_AM_I, (uint8_t *) &(FIFODebugData->WHO_AM_I), 1);
+    return FIFODebugData;
 }
 
 /**

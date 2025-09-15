@@ -127,13 +127,15 @@ int main(void)
   }else {
     HAL_UART_Transmit(&huart1, (const uint8_t *)"FIFO init success!\r\n", strlen("FIFO init success!\r\n"), HAL_MAX_DELAY);
   }
+  // lps22hh_debug_FIFOstatus(&lps22hhObj, &FIFODebugData);
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-
+    // lps22hh_debug_FIFOstatus(&lps22hhObj, &FIFODebugData);
+    // HAL_Delay(100);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
