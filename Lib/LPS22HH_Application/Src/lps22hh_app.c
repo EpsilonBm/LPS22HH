@@ -39,15 +39,19 @@ int32_t lps22hh_App_Init(LPS22HH_Object_t * pObj, LPS22HH_IO_t * pIO) {
 }
 
 int32_t lps22hh_App_FIFO_Init(LPS22HH_Object_t *pObj, uint8_t watermark) {
+    // Write the 0x13U(FIFO_CTRL) -> f_mode as (1)
     if (LPS22HH_FIFO_Set_Mode(pObj, LPS22HH_FIFO_MODE) != LPS22HH_OK) {
         return LPS22HH_ERROR;
     }
+    // Write the 0x14U(FIFO_WTM) -> WTM as (watermark - 1)
     if (LPS22HH_FIFO_Set_Watermark_Level(pObj, watermark - 1) != LPS22HH_OK) {
         return LPS22HH_ERROR;
     }
+    // Write the 0x12U(CTRL_REG3) -> int_f_full as (1)
     if (LPS22HH_FIFO_Set_Interrupt(pObj, 1) != LPS22HH_OK) {
         return LPS22HH_ERROR;
     }
+    // Write the 0x13U(FIFO_CTRL) -> stop_on_wtm as (1)
     // if (LPS22HH_FIFO_Stop_On_Watermark(pObj, 1) != LPS22HH_OK) {
     //     return LPS22HH_ERROR;
     // }
