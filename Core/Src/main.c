@@ -133,15 +133,15 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-    // // To replace the %f use in the sprintf:
-    // int integer_part = (int)odr_data;
-    // int decimal_part = (int)((odr_data - integer_part) * 10);
-    // snprintf(message, sizeof(message), "ODR:%d.%d\r\n", integer_part, decimal_part);
-
     //------------------------
     // Press value:
-    // LPS22HH_PRESS_Driver.GetPressure(&lps22hhObj, &press);
-    // HAL_UART_Transmit(&huart1, (const uint8_t *)message, strlen(message), HAL_MAX_DELAY);
+    LPS22HH_PRESS_Driver.GetPressure(&lps22hhObj, &press);
+    // To replace the %f use in the sprintf:
+    FloatNum press_float;
+    Float_Process(press, 1, &press_float);
+    snprintf(message, sizeof(message), "ODR:%d.%d\r\n", press_float.integerPart, press_float.decimalPart);
+    HAL_UART_Transmit(&huart1, (const uint8_t *)message, strlen(message), HAL_MAX_DELAY);
+    HAL_Delay(500);
 
     /* USER CODE END WHILE */
 
