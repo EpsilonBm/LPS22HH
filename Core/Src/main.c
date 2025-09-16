@@ -135,7 +135,12 @@ int main(void)
   {
     //------------------------
     // Press value:
-    LPS22HH_PRESS_Driver.GetPressure(&lps22hhObj, &press);
+    // LPS22HH_PRESS_Driver.GetPressure(&lps22hhObj, &press);
+    lps22hh_axis1bit32_t data_raw_pressure;
+    (void)memset(data_raw_pressure.u8bit, 0x00, sizeof(int32_t));
+    lps22hh_pressure_raw_get(&(lps22hhObj.Ctx), (uint32_t *)&data_raw_pressure.i32bit) != LPS22HH_OK;
+    press = lps22hh_from_lsb_to_hpa((uint32_t)data_raw_pressure.i32bit);
+
     // To replace the %f use in the sprintf:
     FloatNum press_float;
     Float_Process(press, 1, &press_float);
