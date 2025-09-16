@@ -115,19 +115,23 @@ int main(void)
   char message[20] = {0};
   float odr_data = 0, press = 0, temp = 0;
 
+  // lps22hh_debug_FIFOstatus(&lps22hhObj, &FIFODebugData);
   if (lps22hh_App_Init(&lps22hhObj, &lps22hhIO) != LPS22HH_OK) {
     HAL_UART_Transmit(&huart1, (const uint8_t *)"Sensor init failed!\r\n", strlen("Sensor init failed!\r\n"), HAL_MAX_DELAY);
     lps22hhState = lps22hhERROR;
   }else {
     HAL_UART_Transmit(&huart1, (const uint8_t *)"Sensor init success!\r\n", strlen("Sensor init success!\r\n"), HAL_MAX_DELAY);
   }
+  HAL_Delay(500);
   if (lps22hh_App_FIFO_Init(&lps22hhObj, 25) != LPS22HH_OK) {
     HAL_UART_Transmit(&huart1, (const uint8_t *)"FIFO init failed!\r\n", strlen("FIFO init failed!\r\n"), HAL_MAX_DELAY);
     lps22hhState = lps22hhERROR;
   }else {
     HAL_UART_Transmit(&huart1, (const uint8_t *)"FIFO init success!\r\n", strlen("FIFO init success!\r\n"), HAL_MAX_DELAY);
   }
-  // lps22hh_debug_FIFOstatus(&lps22hhObj, &FIFODebugData);
+  lps22hh_debug_FIFOstatus(&lps22hhObj, &FIFODebugData);
+  // lps22hh_read_reg(&(lps22hhObj.Ctx), LPS22HH_WHO_AM_I, (uint8_t *) &(FIFODebugData.WHO_AM_I), 1);
+
   /* USER CODE END 2 */
 
   /* Infinite loop */

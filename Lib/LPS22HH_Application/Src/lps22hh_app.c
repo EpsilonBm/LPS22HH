@@ -126,12 +126,12 @@ int32_t lps22hh_App_SetOutputDataRate(LPS22HH_Object_t * pObj, float Odr) {
 
 FIFODebugDataTypeDef * lps22hh_debug_FIFOstatus(LPS22HH_Object_t * pObj, FIFODebugDataTypeDef * FIFODebugData) {
     lps22hh_read_reg(&(pObj->Ctx), LPS22HH_CTRL_REG3, (uint8_t *) &(FIFODebugData->CTRL_REG3), 1);
-    lps22hh_read_reg(&(pObj->Ctx), LPS22HH_FIFO_CTRL, (uint8_t *) &(FIFODebugData->FIFO_CTRL), 1);
-    lps22hh_read_reg(&(pObj->Ctx), LPS22HH_FIFO_WTM, (uint8_t *) &(FIFODebugData->FIFO_WTM), 1);
-    lps22hh_read_reg(&(pObj->Ctx), LPS22HH_FIFO_STATUS1, (uint8_t *) &(FIFODebugData->FIFO_STATUS1), 1);
-    lps22hh_read_reg(&(pObj->Ctx), LPS22HH_FIFO_STATUS2, (uint8_t *) &(FIFODebugData->FIFO_STATUS2), 1);
-    lps22hh_read_reg(&(pObj->Ctx), LPS22HH_STATUS, (uint8_t *) &(FIFODebugData->STATUS), 1);
-    lps22hh_read_reg(&(pObj->Ctx), LPS22HH_WHO_AM_I, (uint8_t *) &(FIFODebugData->WHO_AM_I), 1);
+    // lps22hh_read_reg(&(pObj->Ctx), LPS22HH_FIFO_CTRL, (uint8_t *) &(FIFODebugData->FIFO_CTRL), 1);
+    // lps22hh_read_reg(&(pObj->Ctx), LPS22HH_FIFO_WTM, (uint8_t *) &(FIFODebugData->FIFO_WTM), 1);
+    // lps22hh_read_reg(&(pObj->Ctx), LPS22HH_FIFO_STATUS1, (uint8_t *) &(FIFODebugData->FIFO_STATUS1), 1);
+    // lps22hh_read_reg(&(pObj->Ctx), LPS22HH_FIFO_STATUS2, (uint8_t *) &(FIFODebugData->FIFO_STATUS2), 1);
+    // lps22hh_read_reg(&(pObj->Ctx), LPS22HH_STATUS, (uint8_t *) &(FIFODebugData->STATUS), 1);
+    // lps22hh_read_reg(&(pObj->Ctx), LPS22HH_WHO_AM_I, (uint8_t *) &(FIFODebugData->WHO_AM_I), 1);
     return FIFODebugData;
 }
 
