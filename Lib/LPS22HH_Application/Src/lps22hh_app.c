@@ -6,6 +6,8 @@ LPS22HH_Object_t lps22hhObj;      // lps22hh object(pObj)
 //lps22hh_odr_t odr;                // output data rate(an interface under the request of Tan)
 #ifdef __STM32F4xx_HAL_H
 extern I2C_HandleTypeDef hi2c1;   // REMAIN CONFUSION(Will there be confliction), but it must be the
+extern I2C_HandleTypeDef hi2c2;
+#define lps22hhi2c hi2c2
 #endif
 FIFODebugDataTypeDef FIFODebugData;
 
@@ -126,12 +128,12 @@ int32_t lps22hh_App_SetOutputDataRate(LPS22HH_Object_t * pObj, float Odr) {
 
 FIFODebugDataTypeDef * lps22hh_debug_FIFOstatus(LPS22HH_Object_t * pObj, FIFODebugDataTypeDef * FIFODebugData) {
     lps22hh_read_reg(&(pObj->Ctx), LPS22HH_CTRL_REG3, (uint8_t *) &(FIFODebugData->CTRL_REG3), 1);
-    // lps22hh_read_reg(&(pObj->Ctx), LPS22HH_FIFO_CTRL, (uint8_t *) &(FIFODebugData->FIFO_CTRL), 1);
-    // lps22hh_read_reg(&(pObj->Ctx), LPS22HH_FIFO_WTM, (uint8_t *) &(FIFODebugData->FIFO_WTM), 1);
-    // lps22hh_read_reg(&(pObj->Ctx), LPS22HH_FIFO_STATUS1, (uint8_t *) &(FIFODebugData->FIFO_STATUS1), 1);
-    // lps22hh_read_reg(&(pObj->Ctx), LPS22HH_FIFO_STATUS2, (uint8_t *) &(FIFODebugData->FIFO_STATUS2), 1);
-    // lps22hh_read_reg(&(pObj->Ctx), LPS22HH_STATUS, (uint8_t *) &(FIFODebugData->STATUS), 1);
-    // lps22hh_read_reg(&(pObj->Ctx), LPS22HH_WHO_AM_I, (uint8_t *) &(FIFODebugData->WHO_AM_I), 1);
+    lps22hh_read_reg(&(pObj->Ctx), LPS22HH_FIFO_CTRL, (uint8_t *) &(FIFODebugData->FIFO_CTRL), 1);
+    lps22hh_read_reg(&(pObj->Ctx), LPS22HH_FIFO_WTM, (uint8_t *) &(FIFODebugData->FIFO_WTM), 1);
+    lps22hh_read_reg(&(pObj->Ctx), LPS22HH_FIFO_STATUS1, (uint8_t *) &(FIFODebugData->FIFO_STATUS1), 1);
+    lps22hh_read_reg(&(pObj->Ctx), LPS22HH_FIFO_STATUS2, (uint8_t *) &(FIFODebugData->FIFO_STATUS2), 1);
+    lps22hh_read_reg(&(pObj->Ctx), LPS22HH_STATUS, (uint8_t *) &(FIFODebugData->STATUS), 1);
+    lps22hh_read_reg(&(pObj->Ctx), LPS22HH_WHO_AM_I, (uint8_t *) &(FIFODebugData->WHO_AM_I), 1);
     return FIFODebugData;
 }
 
@@ -157,7 +159,7 @@ static void lps22hh_App_IO_Init(LPS22HH_IO_t * pIO) {
   */
 static int32_t LPS22HH_WriteReg(uint16_t dev_addr, uint16_t reg_addr, uint8_t *data, uint16_t len) {
     HAL_StatusTypeDef status = HAL_I2C_Mem_Write(
-        &hi2c1,
+        &lps22hhi2c,
         dev_addr,
         reg_addr,
         I2C_MEMADD_SIZE_8BIT,
@@ -173,7 +175,7 @@ static int32_t LPS22HH_WriteReg(uint16_t dev_addr, uint16_t reg_addr, uint8_t *d
   */
 static int32_t LPS22HH_ReadReg(uint16_t dev_addr, uint16_t reg_addr, uint8_t *data, uint16_t len) {
     HAL_StatusTypeDef status = HAL_I2C_Mem_Read(
-        &hi2c1,
+        &lps22hhi2c,
         dev_addr,
         reg_addr,
         I2C_MEMADD_SIZE_8BIT,

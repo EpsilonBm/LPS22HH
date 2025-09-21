@@ -65,7 +65,7 @@ void SystemClock_Config(void);
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
   //if (GPIO_Pin == GPIO_PIN_8) {
     // Test
-    char message[] = "FIFO FULL";
+    char message[] = "FIFO FULL\n";
     HAL_UART_Transmit(&huart1, message, strlen(message), HAL_MAX_DELAY);
 
     // Set the state
@@ -131,7 +131,6 @@ int main(void)
     HAL_UART_Transmit(&huart1, (const uint8_t *)"FIFO init success!\r\n", strlen("FIFO init success!\r\n"), HAL_MAX_DELAY);
   }
   lps22hh_debug_FIFOstatus(&lps22hhObj, &FIFODebugData);
-  // lps22hh_read_reg(&(lps22hhObj.Ctx), LPS22HH_WHO_AM_I, (uint8_t *) &(FIFODebugData.WHO_AM_I), 1);
 
   /* USER CODE END 2 */
 
@@ -139,8 +138,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-    // lps22hh_debug_FIFOstatus(&lps22hhObj, &FIFODebugData);
-    // HAL_Delay(100);
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
