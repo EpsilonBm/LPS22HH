@@ -68,6 +68,8 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
     char message[] = "FIFO FULL\n";
     HAL_UART_Transmit(&huart1, message, strlen(message), HAL_MAX_DELAY);
 
+    LPS22HH_FIFO_Set_Mode(&lps22hhObj, LPS22HH_BYPASS_MODE);
+    LPS22HH_FIFO_Set_Mode(&lps22hhObj, LPS22HH_FIFO_MODE);
     // Set the state
   //}
 }
@@ -132,12 +134,15 @@ int main(void)
   }
   lps22hh_debug_FIFOstatus(&lps22hhObj, &FIFODebugData);
 
+  LPS22HH_FIFO_Set_Mode(&lps22hhObj, LPS22HH_BYPASS_MODE);
+  LPS22HH_FIFO_Set_Mode(&lps22hhObj, LPS22HH_FIFO_MODE);
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+    // lps22hh_App_GetOutputDataRate(&lps22hhObj, &odr_data);
 
     /* USER CODE END WHILE */
 

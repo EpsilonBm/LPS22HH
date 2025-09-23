@@ -42,19 +42,21 @@ int32_t lps22hh_App_Init(LPS22HH_Object_t * pObj, LPS22HH_IO_t * pIO) {
 }
 
 int32_t lps22hh_App_FIFO_Init(LPS22HH_Object_t *pObj, uint8_t watermark) {
-    // Write the 0x13U(FIFO_CTRL) -> f_mode as (1)
-    if (LPS22HH_FIFO_Set_Mode(pObj, LPS22HH_FIFO_MODE) != LPS22HH_OK) {
-        return LPS22HH_ERROR;
-    }
-    // Write the 0x14U(FIFO_WTM) -> WTM as (watermark - 1)
+    // Write the 0x14U(FIFO_WTM) -> WTM as (watermark - 1) (watermark - 1)
+    // Attention: The watermark level write must before the FIFO enabled!(refer an5209-9.2.1)
     if (LPS22HH_FIFO_Set_Watermark_Level(pObj, watermark - 1) != LPS22HH_OK) {
         return LPS22HH_ERROR;
     }
-    // Write the 0x12U(CTRL_REG3) -> int_f_full as (1)
+    // Write the 0x13U(FIFO_CTRL) -> f_mode as (1) (1)
+    if (LPS22HH_FIFO_Set_Mode(pObj, LPS22HH_FIFO_MODE) != LPS22HH_OK) {
+        return LPS22HH_ERROR;
+    }
+
+    // Write the 0x12U(CTRL_REG3) -> int_f_full as (1) (32)
     if (LPS22HH_FIFO_Set_Interrupt(pObj, 1) != LPS22HH_OK) {
         return LPS22HH_ERROR;
     }
-    // Write the 0x13U(FIFO_CTRL) -> stop_on_wtm as (1)
+    // Write the 0x13U(FIFO_CTRL) -> stop_on_wtm as (1) (1->9)
     // if (LPS22HH_FIFO_Stop_On_Watermark(pObj, 1) != LPS22HH_OK) {
     //     return LPS22HH_ERROR;
     // }
@@ -134,6 +136,7 @@ FIFODebugDataTypeDef * lps22hh_debug_FIFOstatus(LPS22HH_Object_t * pObj, FIFODeb
     lps22hh_read_reg(&(pObj->Ctx), LPS22HH_FIFO_STATUS2, (uint8_t *) &(FIFODebugData->FIFO_STATUS2), 1);
     lps22hh_read_reg(&(pObj->Ctx), LPS22HH_STATUS, (uint8_t *) &(FIFODebugData->STATUS), 1);
     lps22hh_read_reg(&(pObj->Ctx), LPS22HH_WHO_AM_I, (uint8_t *) &(FIFODebugData->WHO_AM_I), 1);
+
     return FIFODebugData;
 }
 
