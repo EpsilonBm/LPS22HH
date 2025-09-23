@@ -3,13 +3,14 @@
 lps22hhStateTypeDef lps22hhState; // state Variable of lps22hh
 LPS22HH_IO_t lps22hhIO;           // function interface of IO(pIO)
 LPS22HH_Object_t lps22hhObj;      // lps22hh object(pObj)
-//lps22hh_odr_t odr;                // output data rate(an interface under the request of Tan)
+//lps22hh_odr_t odr;                // output data rate
 #ifdef __STM32F4xx_HAL_H
 extern I2C_HandleTypeDef hi2c1;   // REMAIN CONFUSION(Will there be confliction), but it must be the
 extern I2C_HandleTypeDef hi2c2;
 #define lps22hhi2c hi2c2
 #endif
-FIFODebugDataTypeDef FIFODebugData;
+lps22hhFIFODataTypeDef lps22hhFIFOData;
+lps22hhFIFODebugDataTypeDef lps22hhFIFODebugData;
 
 static void lps22hh_App_IO_Init(LPS22HH_IO_t *);
 static int32_t LPS22HH_WriteReg(uint16_t, uint16_t, uint8_t *, uint16_t);
@@ -36,7 +37,7 @@ int32_t lps22hh_App_Init(LPS22HH_Object_t * pObj, LPS22HH_IO_t * pIO) {
         //
         return LPS22HH_ERROR;
     }else {
-        lps22hh_App_SetOutputDataRate(pObj, 25);
+        lps22hh_App_SetOutputDataRate(pObj, 100);
         return LPS22HH_OK;
     }
 }
@@ -51,7 +52,6 @@ int32_t lps22hh_App_FIFO_Init(LPS22HH_Object_t *pObj, uint8_t watermark) {
     if (LPS22HH_FIFO_Set_Mode(pObj, LPS22HH_FIFO_MODE) != LPS22HH_OK) {
         return LPS22HH_ERROR;
     }
-
     // Write the 0x12U(CTRL_REG3) -> int_f_full as (1) (32)
     if (LPS22HH_FIFO_Set_Interrupt(pObj, 1) != LPS22HH_OK) {
         return LPS22HH_ERROR;
@@ -128,7 +128,19 @@ int32_t lps22hh_App_SetOutputDataRate(LPS22HH_Object_t * pObj, float Odr) {
     return LPS22HH_ERROR;
 }
 
-FIFODebugDataTypeDef * lps22hh_debug_FIFOstatus(LPS22HH_Object_t * pObj, FIFODebugDataTypeDef * FIFODebugData) {
+int32_t lps22hh_App_Get_FIFO_Data(LPS22HH_Object_t * pObj, lps22hhFIFODataTypeDef * FIFOData) {
+    if (LPS22HH_FIFO_Get_Level(pObj, &(FIFOData->level)) != LPS22HH_OK) {
+        return LPS22HH_ERROR;
+    }
+    for (int i = 0;i < FIFOData->level;i++) {
+        if (LPS22HH_FIFO_Get_Data(pObj, &(FIFOData->press[i]), &(FIFOData->temperature[i])) != LPS22HH_OK) {
+            return LPS22HH_ERROR;
+        }
+    }
+    return LPS22HH_OK;
+}
+
+lps22hhFIFODebugDataTypeDef * lps22hh_debug_FIFOstatus(LPS22HH_Object_t * pObj, lps22hhFIFODebugDataTypeDef * FIFODebugData) {
     lps22hh_read_reg(&(pObj->Ctx), LPS22HH_CTRL_REG3, (uint8_t *) &(FIFODebugData->CTRL_REG3), 1);
     lps22hh_read_reg(&(pObj->Ctx), LPS22HH_FIFO_CTRL, (uint8_t *) &(FIFODebugData->FIFO_CTRL), 1);
     lps22hh_read_reg(&(pObj->Ctx), LPS22HH_FIFO_WTM, (uint8_t *) &(FIFODebugData->FIFO_WTM), 1);

@@ -19,20 +19,28 @@ typedef struct {
     uint8_t FIFO_STATUS2;
     uint8_t STATUS;
     uint8_t WHO_AM_I;
-}FIFODebugDataTypeDef;
+}lps22hhFIFODebugDataTypeDef;
+
+typedef struct {
+    uint8_t level;
+    float press[128];
+    float temperature[128];
+}lps22hhFIFODataTypeDef;
 
 extern LPS22HH_IO_t lps22hhIO;
 extern LPS22HH_Object_t lps22hhObj;
 extern lps22hh_odr_t odr;
 extern lps22hhStateTypeDef lps22hhState;
-extern FIFODebugDataTypeDef FIFODebugData;
+extern lps22hhFIFODataTypeDef lps22hhFIFOData;
+extern lps22hhFIFODebugDataTypeDef lps22hhFIFODebugData;
 
 
 int32_t lps22hh_App_Init(LPS22HH_Object_t *, LPS22HH_IO_t *);
 int32_t lps22hh_App_FIFO_Init(LPS22HH_Object_t *, uint8_t);
 int32_t lps22hh_App_GetOutputDataRate(LPS22HH_Object_t *, float *);
 int32_t lps22hh_App_SetOutputDataRate(LPS22HH_Object_t *, float);
-FIFODebugDataTypeDef * lps22hh_debug_FIFOstatus(LPS22HH_Object_t *, FIFODebugDataTypeDef *);
+int32_t lps22hh_App_Get_FIFO_Data(LPS22HH_Object_t *, lps22hhFIFODataTypeDef *);
+lps22hhFIFODebugDataTypeDef * lps22hh_debug_FIFOstatus(LPS22HH_Object_t *, lps22hhFIFODebugDataTypeDef *);
 
 
 #endif //LPS22HH_APP_H

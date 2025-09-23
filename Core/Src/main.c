@@ -132,7 +132,7 @@ int main(void)
   }else {
     HAL_UART_Transmit(&huart1, (const uint8_t *)"FIFO init success!\r\n", strlen("FIFO init success!\r\n"), HAL_MAX_DELAY);
   }
-  lps22hh_debug_FIFOstatus(&lps22hhObj, &FIFODebugData);
+  lps22hh_debug_FIFOstatus(&lps22hhObj, &lps22hhFIFODebugData);
 
   LPS22HH_FIFO_Set_Mode(&lps22hhObj, LPS22HH_BYPASS_MODE);
   LPS22HH_FIFO_Set_Mode(&lps22hhObj, LPS22HH_FIFO_MODE);
